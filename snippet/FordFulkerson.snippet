@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<CodeSnippets  xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>fordfulkerson</Title>
+      <Shortcut>fordfulkerson</Shortcut>
+      <Description>フォードファルカーソン法</Description>
+      <Author></Author>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal Editable="false"></Literal>
+      </Declarations>
+      <Code Language="csharp"><![CDATA[struct Graph
+{
+    struct Edge
+    {
+        ll rev, from, to, cap;
+        Edge(ll r, ll f, ll t, ll c) : rev(r), from(f), to(t), cap(c) {}
+    };
+
+    vector<vector<Edge>> list;
+
+    Graph(ll N = 0) : list(N) {}
+
+    size_t size() { return list.size(); }
+
+    vector<Edge> &operator[](ll i) { return list[i]; }
+
+    Edge& redge(const Edge& e) { return list[e.to][e.rev]; }
+
+    void run_flow(Edge& e, ll f)
+    {
+        e.cap -= f;
+        redge(e).cap += f;
+    }
+
+    void addedge(ll from, ll to, ll cap)
+    {
+        ll fromrev = (ll)list[from].size();
+        ll torev = (ll)list[to].size();
+        list[from].push_back(Edge(torev, from, to, cap));
+        list[to].push_back(Edge(fromrev, to, from, 0));
+    }
+};
+
+struct FordFulkerson
+{
+    static const ll INF = 1LL << 30;
+    vector<bool> seen;
+    FordFulkerson() {}
+
+    ll fodfs(Graph& g, ll v, ll t, ll f)
+    {
+        if (t == v) return f;
+        seen[v] = true;
+        for (auto  &e : g[v])
+        {
+            if (seen[e.to]) continue;
+            if (e.cap == 0) continue;
+
+            ll flow = fodfs(g, e.to, t, min(e.cap, f));
+
+            if (flow == 0)continue;
+
+            g.run_flow(e, flow);
+            return flow;
+        }
+        return 0;
+    }
+
+    ll solve(Graph& g, ll s, ll t)
+    {
+        ll N = g.size();
+        ll res = 0;
+        while (true)
+        {
+            seen.assign(N, false);
+            ll flow = fodfs(g, s, t, INF);
+            if (flow == 0) return res;
+            res += flow;
+        }
+    }
+};
+$end$]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

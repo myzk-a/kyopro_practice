@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<CodeSnippets  xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>unionfind</Title>
+      <Shortcut>unionfind</Shortcut>
+      <Description>UnionFind</Description>
+      <Author></Author>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal Editable="false"></Literal>
+      </Declarations>
+      <Code Language="csharp"><![CDATA[template<class T>
+struct UnionFind
+{
+    vector<T> siz, par;
+    UnionFind(T N) : siz(N, 1), par(N, -1) {}
+
+    T root(T x)
+    {
+        if (par[x] == -1) return x;
+        else return par[x] = root(par[x]);
+    }
+
+    bool is_same(T x, T y)
+    {
+        return (root(x) == root(y));
+    }
+
+    bool unite(T x, T y)
+    {
+        x = root(x);
+        y = root(y);
+        if (x == y) return false;
+        par[x] = y;
+        return true;
+    }
+
+    T size(T x)
+    {
+        return siz[root(x)];
+    }
+};$end$]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

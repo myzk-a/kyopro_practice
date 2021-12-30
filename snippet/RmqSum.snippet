@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<CodeSnippets  xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>RmqSum</Title>
+      <Shortcut>RmqSum</Shortcut>
+      <Description>遅延評価セグメント木(区間加算、区間和)</Description>
+      <Author></Author>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal Editable="false"></Literal>
+      </Declarations>
+      <Code Language="csharp"><![CDATA[struct LazySegmentTree
+{
+private:
+    long long n;
+    vector<long long> node, lazy;
+
+public:
+    LazySegmentTree(vector<long long> v)
+    {
+        long long sz = (long long)v.size();
+        n = 1;
+        while (n < sz) n *= 2;
+        node.resize(2 * n - 1);
+        lazy.resize(2 * n - 1, 0);
+
+        for (long long i = 0; i < sz; i++) node[i + n - 1] = v[i];
+        for (long long i = n - 2; i >= 0; i--) node[i] = node[i * 2 + 1] + node[i * 2 + 2];
+    }
+
+    void eval(long long k, long long l, long long r)
+    {
+        if (lazy[k] != 0)
+        {
+            node[k] += lazy[k];
+            if (r - l > 1)
+            {
+                lazy[2 * k + 1] += lazy[k] / 2;
+                lazy[2 * k + 2] += lazy[k] / 2;
+            }
+            lazy[k] = 0;
+        }
+    }
+
+    void add(long long a, long long b, long long x, long long k = 0, long long l = 0, long long r = -1) {
+        if (r < 0) r = n;
+        eval(k, l, r);
+        if (b <= l || r <= a) return;
+        if (a <= l && r <= b)
+        {
+            lazy[k] += (r - l) * x;
+            eval(k, l, r);
+        }
+        else
+        {
+            add(a, b, x, 2 * k + 1, l, (l + r) / 2);
+            add(a, b, x, 2 * k + 2, (l + r) / 2, r);
+            node[k] = node[2 * k + 1] + node[2 * k + 2];
+        }
+    }
+
+    long long getsum(long long a, long long b, long long k = 0, long long l = 0, long long r = -1)
+    {
+        if (r < 0) r = n;
+        eval(k, l, r);
+        if (b <= l || r <= a) return 0;
+        if (a <= l && r <= b) return node[k];
+        long long vl = getsum(a, b, 2 * k + 1, l, (l + r) / 2);
+        long long vr = getsum(a, b, 2 * k + 2, (l + r) / 2, r);
+        return vl + vr;
+    }
+};$end$]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<CodeSnippets  xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>PrimeFactorization</Title>
+      <Shortcut>PrimeFactorization</Shortcut>
+      <Description>素因数分解</Description>
+      <Author></Author>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal Editable="false"></Literal>
+      </Declarations>
+      <Code Language="csharp"><![CDATA[vector<long long> p_fact(long long n)
+{
+    vector<long long> res;
+    long long N = n;
+    for (long long i = 2; i * i <= N; i++)
+    {
+        while (n % i == 0)
+        {
+            res.push_back(i);
+            n /= i;
+        }
+    }
+    if (n != 1) res.push_back(n);
+    return res;
+}$end$]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>
