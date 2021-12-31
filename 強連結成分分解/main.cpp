@@ -1,4 +1,7 @@
-﻿#include<bits/stdc++.h>
+﻿// 競プロ典型90 021 - Come Back in One Piece（★5）https://atcoder.jp/contests/typical90/tasks/typical90_u
+// 解説 https://twitter.com/e869120/status/1385363292739104775/photo/1
+
+#include<bits/stdc++.h>
 using namespace std;
 using ll = long long;
 using Graph = vector<vector<ll>>;
