@@ -11,18 +11,22 @@
       <Declarations>
         <Literal Editable="false"></Literal>
       </Declarations>
-      <Code Language="csharp"><![CDATA[long long moddiv(long long a, long long b, long long m)
+      <Code Language="csharp">
+  <![CDATA[long long moddiv(long long a, long long b, long long m)
 {
 	// Get the value of a/b
 
 	// b ^ (m-2) % m
 	long long p = 1;
-	long long q = b;
-	for (int i = 0; i < 30; ++i)
+	long long q = m - 2;
+	while (q != 0)
 	{
-		if( ((m-2) & (1LL << i)) != 0) { p *= q; p %= m; }
-		q *= q;
-		q %= m;
+		if (q % 2 == 1)
+		{
+			p = p * b % m;
+		}
+		b = b * b % m;
+		q /= 2;
 	}
 
 	// a * b^(m-2) % m
