@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<CodeSnippets  xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>COMBINATION</Title>
+      <Shortcut>COMBINATION</Shortcut>
+      <Description>組み合わせ(Nが小さいとき)</Description>
+      <Author></Author>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal Editable="false"></Literal>
+      </Declarations>
+      <Code Language="csharp"><![CDATA[vector<vector<long long>> Combination(long long N)
+{
+    vector<vector<long long>> C(N + 1, vector<long long>(N + 1, 0));
+    C[0][0] = 1;
+    for (long long i = 1; i <= N; ++i)
+    {
+        C[i][0] = 1;
+        C[i][i] = 1;
+        for (long long j = 1; j <= i; ++j)
+        {
+            C[i][j] = C[i - 1][j - 1] + C[i - 1][j];
+        }
+    }
+    return C;
+}$end$]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>
